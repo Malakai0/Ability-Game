@@ -1,6 +1,8 @@
 local Remote: RemoteEvent = game:GetService'ReplicatedStorage'.RemoteEvent;
 
 local Cooldowns = {};
+local CurrentlyHolding = setmetatable({}, {__mode = "v"});
+local CurrentlyHandling = setmetatable({}, {__mode = "v"});
 
 local Common = game:GetService("ReplicatedStorage").Common;
 
@@ -9,8 +11,6 @@ local SharedMoves = require(Common.SharedMoves);
 
 local MoveList = script.Moves:GetChildren()
 local Moves = {}
-
-local CurrentlyHandling = setmetatable({}, {__mode = "v"});
 
 for _, Move in next, MoveList do
     local MoveInfo = require(Move)
@@ -30,6 +30,11 @@ local function GenerateCooldownKeyForID(Id, Move)
 end
 
 Remote.OnServerEvent:Connect(function(Player, Key, State)
+
+    if (table.find(CurrentlyHolding, Player) and State == 1) then
+        return
+    end
+
     if (table.find(CurrentlyHandling, Player)) then
         return;
     end
@@ -61,7 +66,17 @@ Remote.OnServerEvent:Connect(function(Player, Key, State)
 
     if (type(Move[FuncName]) == 'function') then
         table.insert(CurrentlyHandling, Player)
-        table.insert(Cooldowns, GenerateCooldownKeyForID(Id, MoveKey))
+
+        local DisabledFunc = type(Move.Disabled) == 'function'
+        local ApplyCooldown = (FuncName == 'Enabled' and (not DisabledFunc)) or (FuncName == 'Disabled');
+
+        if (ApplyCooldown) then
+            table.insert(Cooldowns, GenerateCooldownKeyForID(Id, MoveKey))
+        end
+
+        if (FuncName == 'Enabled' and type(Move.Disabled) == 'function') then
+            table.insert(CurrentlyHolding, Player)
+        end
 
         Promise.new(function(resolve)
             resolve(Move[FuncName](Move, SharedMoves[MoveKey].Environment or {}, Player))
@@ -70,9 +85,15 @@ Remote.OnServerEvent:Connect(function(Player, Key, State)
                 table.remove(CurrentlyHandling, table.find(CurrentlyHandling, Player))
             end
 
-            task.delay(SharedMoves[MoveKey].Cooldown or 0, function()
-                table.remove(Cooldowns, table.find(Cooldowns, GenerateCooldownKeyForID(Id, MoveKey)))
-            end)
+            if (FuncName == 'Disabled' and Player) then
+                table.remove(CurrentlyHolding, table.find(CurrentlyHolding, Player))
+            end
+
+            if (ApplyCooldown) then
+                task.delay(SharedMoves[MoveKey].Cooldown or 0, function()
+                    table.remove(Cooldowns, table.find(Cooldowns, GenerateCooldownKeyForID(Id, MoveKey)))
+                end)
+            end
         end)
     end
 end)

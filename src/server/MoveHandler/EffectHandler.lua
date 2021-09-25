@@ -5,10 +5,10 @@ local ForceRemote: RemoteEvent = game:GetService'ReplicatedStorage'.Force;
 
 local Players = game:GetService('Players');
 
-function EffectHandler.PlayEffectFromPlayer(Player, Effect)
+function EffectHandler.PlayEffectFromPlayer(Player, Effect, State)
     for I,V in next, Players:GetPlayers() do
         if V ~= Player then
-            Remote:FireClient(V, Effect, Player);
+            Remote:FireClient(V, Effect, tostring(State):lower() == 'enabled' and 1 or 0, Player);
         end
     end
 end

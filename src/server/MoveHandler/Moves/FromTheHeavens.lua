@@ -68,7 +68,7 @@ return {
     Move = 'InstantaneousLightningBolt';
 
     Enabled = function(self, Data, Player)
-        EffectHandler.PlayEffectFromPlayer(Player, self.Move);
+        EffectHandler.PlayEffectFromPlayer(Player, self.Move, 'Enabled');
 
         task.delay(Data.TIME_FOR_BOLT, Explode, Player);
 

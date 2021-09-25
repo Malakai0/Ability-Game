@@ -37,7 +37,13 @@ local function DoNTimes(N: number, Function)
     end
 end
 
-function Effects.Functions.InstantaneousLightningBolt(TargetPlayer)
+local EMPTY_FUNCTION = function() end; --// One reference to an empty function, saves memory.
+
+local function CreateFX(Name, Enabled, Disabled)
+    Effects.Functions[Name] = {Enabled = Enabled or EMPTY_FUNCTION; Disabled = Disabled or EMPTY_FUNCTION}
+end
+
+CreateFX('InstantaneousLightningBolt', function(TargetPlayer)
     local Color = Color3.new(1,1,1);
 
     local Character = TargetPlayer.Character;
@@ -89,6 +95,6 @@ function Effects.Functions.InstantaneousLightningBolt(TargetPlayer)
             ShakerInstance:ShakeOnce(10, 100, 0, .5)
         end
     end)
-end
+end)
 
 return Effects

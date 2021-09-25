@@ -9,55 +9,22 @@ local SharedMoves = require(Common:WaitForChild('SharedMoves'));
 local Handler = game:GetService("ReplicatedStorage"):WaitForChild('RemoteEvent');
 
 local Moves = {}
-local Cooldowns = {};
-
-local CurrentlyHandling = false;
 
 for _, Move in next, SharedMoves do
     Moves[Move.Keybind.Value] = Move;
 end
 
-local function GenerateCooldownKeyForID(Id, Move)
-    return Id .. ':' .. tostring(Move);
-end
-
 local function CallMove(Value, State)
-    local Shared = Moves[Value];
-
     if (not Player.Character) then
         return
     end
 
-    if (not Moves[Value]) then
-        return;
-    end
-
-    local Id = Player.Character:GetAttribute('UID');
-
-    if (table.find(Cooldowns, GenerateCooldownKeyForID(Id, Shared.Name))) then
-        return;
-    end
-
-    if (CurrentlyHandling) then
-        return;
-    end
-
-    CurrentlyHandling = true;
-    table.insert(Cooldowns, GenerateCooldownKeyForID(Id, Shared.Name))
-
-    task.delay(Shared.Cooldown or 0, function()
-        table.remove(Cooldowns, table.find(Cooldowns, GenerateCooldownKeyForID(Id, Shared.Name)))
-    end)
-
-    task.delay(Shared.Environment.MOVE_LENGTH, function()
-        CurrentlyHandling = false;
-    end)
-
     Handler:FireServer(Value, State)
 
-    local Effect = Effects.Functions[Shared.Name]
+    local Shared = Moves[Value];
+    local Effect = Shared and Effects.Functions[Shared.Name]
     if (Effect) then
-        Effect(Player)
+        Effect[State == 1 and 'Enabled' or 'Disabled'](Player)
     end
 end
 

@@ -7,10 +7,10 @@ local Common = ReplicatedStorage:WaitForChild('Common');
 
 local Effects = require(Common:WaitForChild('Effects'));
 
-Remote.OnClientEvent:Connect(function(EffectName, Caller)
+Remote.OnClientEvent:Connect(function(EffectName, State, Caller)
     local Effect = Effects.Functions[EffectName]
     if (Effect) then
-        Effect(Caller)
+        Effect[State == 1 and 'Enabled' or 'Disabled'](Caller)
     end
 end)
 
