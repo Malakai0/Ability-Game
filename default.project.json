@@ -1,9 +1,10 @@
 {
-  "name": "Lightning",
+  "name": "Ability Game",
   "tree": {
     "$className": "DataModel",
 
     "ReplicatedStorage": {
+      "$ignoreUnknownInstances": true,
       "$className": "ReplicatedStorage",
       "Common": {
         "$path": "src/shared"
@@ -11,6 +12,7 @@
     },
 
     "ServerScriptService": {
+      "$ignoreUnknownInstances": true,
       "$className": "ServerScriptService",
       "Server": {
         "$path": "src/server"
@@ -18,6 +20,7 @@
     },
 
     "StarterPlayer": {
+      "$ignoreUnknownInstances": true,
       "$className": "StarterPlayer",
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
