@@ -71,7 +71,5 @@ return {
         EffectHandler.PlayEffectFromPlayer(Player, self.Move, 'Enabled');
 
         task.delay(Data.TIME_FOR_BOLT, Explode, Player);
-
-        task.wait(Data.MOVE_LENGTH);
     end;
 }

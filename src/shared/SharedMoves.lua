@@ -4,10 +4,10 @@ return {
         Name = 'InstantaneousLightningBolt';
 
         Cooldown = 3;
+        MoveLength = .4;
 
         Environment = {
             TIME_FOR_BOLT = .2;
-            MOVE_LENGTH = .4;
         };
     };
 
@@ -15,7 +15,7 @@ return {
         Keybind = Enum.KeyCode.R;
         Name = 'Barrage';
 
-        Cooldown = 10;
+        Cooldown = 5;
 
         Environment = {};
     }

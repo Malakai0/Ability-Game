@@ -8,10 +8,16 @@ local SharedMoves = require(Common:WaitForChild('SharedMoves'));
 
 local Handler = game:GetService("ReplicatedStorage"):WaitForChild('RemoteEvent');
 
+local Cooldown = {}; --// For FX.
+
 local Moves = {}
 
 for _, Move in next, SharedMoves do
     Moves[Move.Keybind.Value] = Move;
+end
+
+local function GenerateCooldownKeyForID(Id, Move)
+    return Id .. ':' .. Move;
 end
 
 local function CallMove(Value, State)
@@ -19,12 +25,21 @@ local function CallMove(Value, State)
         return
     end
 
+    local Id = Player.Character:GetAttribute('UID')
+
     Handler:FireServer(Value, State)
 
     local Shared = Moves[Value];
     local Effect = Shared and Effects.Functions[Shared.Name]
-    if (Effect) then
+    local Key = Shared and GenerateCooldownKeyForID(Id, Shared.Name);
+
+    if (Effect and (not table.find(Cooldown, Key))) then
+        table.insert(Cooldown, Key)
         Effect[State == 1 and 'Enabled' or 'Disabled'](Player)
+
+        task.delay((Shared.Cooldown or 0) + (Shared.MoveLength or 0), function()
+            table.remove(Cooldown, table.find(Cooldown, Key));
+        end)
     end
 end
 

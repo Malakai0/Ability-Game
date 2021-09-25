@@ -81,6 +81,8 @@ Remote.OnServerEvent:Connect(function(Player, Key, State)
         Promise.new(function(resolve)
             resolve(Move[FuncName](Move, SharedMoves[MoveKey].Environment or {}, Player))
         end):andThen(function()
+            task.wait(SharedMoves[MoveKey].MoveLength or 0)
+
             if (Player) then
                 table.remove(CurrentlyHandling, table.find(CurrentlyHandling, Player))
             end
