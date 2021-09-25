@@ -3,6 +3,7 @@ local Players = game:GetService'Players'
 local function CharacterAdded(Character: Model)
     repeat task.wait() until Character.Parent == workspace
     
+    Character:SetAttribute('UID', game:GetService'HttpService':GenerateGUID())
     Character.Parent = workspace.Entities
 end
 
