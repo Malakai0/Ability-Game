@@ -38,9 +38,9 @@ function Util.AOEAttack(Player: Player, Origin: CFrame, Radius: number, Whitelis
         table.insert(Params.FilterDescendantsInstances, value)
     end);
 
-    local Parts = workspace:GetPartBoundsInBox(Origin, Vector3.new(Radius, Radius, Radius), Params);
+    local Parts: Array<BasePart> = workspace:GetPartBoundsInBox(Origin, Vector3.new(Radius, Radius, Radius), Params);
 
-    local AffectedModels = setmetatable({}, {__mode = 'k'});
+    local AffectedModels: table = setmetatable({}, {__mode = 'k'});
 
     local AffectMaxCount = Settings.MaxHits or 1;
 
@@ -50,7 +50,7 @@ function Util.AOEAttack(Player: Player, Origin: CFrame, Radius: number, Whitelis
         local TargetPlayer = Model and game:GetService('Players'):GetPlayerFromCharacter(Model)
 
         local InvalidInstances = (not Model) or (not Humanoid);
-        local MaxAffections = (Model and (AffectedModels[Model] and (AffectedModels[Model] >= AffectMaxCount or AffectMaxCount == 0)));
+        local MaxAffections = Model and (AffectedModels[Model] and (AffectedModels[Model] >= AffectMaxCount or AffectMaxCount == 0));
 
         if (MaxAffections or InvalidInstances) then
             continue

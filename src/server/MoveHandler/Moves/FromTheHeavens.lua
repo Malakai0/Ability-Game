@@ -41,10 +41,10 @@ local function Explode(Player)
 
             if (TargetPlayer) then
                 Util.ApplyForce(TargetPlayer, -Direction)
-            else
+            else --// NPC
                 PrimaryPart:SetNetworkOwner(Player)
 
-                Util.ApplyForce(Player, -Direction, PrimaryPart)
+                Util.ApplyForce(Player, -Direction, PrimaryPart) --// Player controls their physics.
 
                 task.delay(4, function()
                     PrimaryPart:SetNetworkOwnershipAuto();

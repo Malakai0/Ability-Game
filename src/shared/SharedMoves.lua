@@ -10,13 +10,4 @@ return {
             TIME_FOR_BOLT = .2;
         };
     };
-
-    Barrage = {
-        Keybind = Enum.KeyCode.R;
-        Name = 'Barrage';
-
-        Cooldown = 5;
-
-        Environment = {};
-    }
 }
