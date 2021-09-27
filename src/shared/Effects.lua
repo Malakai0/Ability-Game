@@ -52,11 +52,15 @@ CreateFX('InstantaneousLightningBolt', function(TargetPlayer)
     if (not PrimaryPart) then return end;
 
     local RayOrigin = PrimaryPart.Position;
-    local RayDirection = Vector3.new(0, -100, 0);
+    local RayDirection = Vector3.new(0, -100000, 0);
 
-    local _, Position = FireRay(RayOrigin, RayDirection, {workspace.Entities}, 1); --// 0: whitelist, 1: blacklist
+    local _, Position = FireRay(RayOrigin, RayDirection, {workspace.Entities}, 1);
 
     if (not Position) then return end;
+
+    if ((Position - RayOrigin).Magnitude >= 10) then
+        Position = RayOrigin + Vector3.new(0, -3, 0);
+    end
 
     local A0, A1 = {}, {};
 

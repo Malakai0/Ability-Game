@@ -31,7 +31,7 @@ local function CallMove(Value, State)
 
     local Shared = Moves[Value];
     local Effect = Shared and Effects.Functions[Shared.Name]
-    local Key = Shared and GenerateCooldownKeyForID(Id, Shared.Name);
+    local Key = Shared and GenerateCooldownKeyForID(Id, Shared.Name .. State);
 
     if (Effect and (not table.find(Cooldown, Key))) then
         table.insert(Cooldown, Key)
