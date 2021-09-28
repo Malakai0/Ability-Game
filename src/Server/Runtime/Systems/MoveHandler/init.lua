@@ -1,13 +1,15 @@
-local Remote: RemoteEvent = game:GetService'ReplicatedStorage'.RemoteEvent;
+local Remote: RemoteEvent = game:GetService'ReplicatedStorage'.Remotes.RemoteEvent;
+
+local Util = require(script.Util);
 
 local Cooldowns = {};
 local CurrentlyHolding = setmetatable({}, {__mode = "v"});
 local CurrentlyHandling = setmetatable({}, {__mode = "v"});
 
-local Common = game:GetService("ReplicatedStorage").Common;
+local Modules = game:GetService("ReplicatedStorage").Modules;
 
-local Promise = require(Common.Modules.Promise);
-local SharedMoves = require(Common.Modules.SharedMoves);
+local Promise = require(Modules.Promise);
+local SharedMoves = require(Modules.SharedMoves);
 
 local MoveList = script.Moves:GetChildren()
 local Moves = {}
@@ -83,6 +85,9 @@ Remote.OnServerEvent:Connect(function(Player, Key, State)
         end):andThen(function()
             task.wait(SharedMoves[MoveKey].MoveLength or 0)
 
+            local Length = SharedMoves[MoveKey].Cooldown
+            Util.ApplyGui(Player, 'Cooldown', MoveKey, SharedMoves[MoveKey].Keybind.Name, Length)
+
             if (Player) then
                 table.remove(CurrentlyHandling, table.find(CurrentlyHandling, Player))
             end
@@ -99,3 +104,5 @@ Remote.OnServerEvent:Connect(function(Player, Key, State)
         end)
     end
 end)
+
+return nil;

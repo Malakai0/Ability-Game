@@ -56,7 +56,7 @@ local function Explode(Player: Player, Data: table): nil
 end
 
 return {
-    Move = 'InstantaneousLightningBolt';
+    Move = 'LightningStrike';
 
     Enabled = function(self, Data, Player)
         Util.PlayEffectFromPlayer(Player, self.Move, 'Enabled');

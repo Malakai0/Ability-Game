@@ -1,12 +1,12 @@
 local Player = game:GetService('Players').LocalPlayer;
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Common = ReplicatedStorage:WaitForChild('Common');
+local Modules = ReplicatedStorage:WaitForChild('Modules');
 
-local Effects = require(Common.Modules:WaitForChild('Effects'));
-local SharedMoves = require(Common.Modules:WaitForChild('SharedMoves'));
+local Effects = require(Modules:WaitForChild('Effects'));
+local SharedMoves = require(Modules:WaitForChild('SharedMoves'));
 
-local Handler = game:GetService("ReplicatedStorage"):WaitForChild('RemoteEvent');
+local Handler = ReplicatedStorage:WaitForChild('Remotes'):WaitForChild('RemoteEvent');
 
 local Cooldown = {}; --// For FX.
 

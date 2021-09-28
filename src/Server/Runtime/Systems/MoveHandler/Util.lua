@@ -1,20 +1,23 @@
 local Util = {}
 
-local Remote: RemoteEvent = game:GetService'ReplicatedStorage'.Effect;
-local ForceRemote: RemoteEvent = game:GetService'ReplicatedStorage'.Force;
+local ClientCommunicator: RemoteEvent = game:GetService'ReplicatedStorage'.Remotes.ClientCommunication;
 
 local Players = game:GetService('Players');
+
+function Util.ApplyGui(Player: Player, ...)
+    ClientCommunicator:FireClient(Player, 'GUI', ...);
+end
 
 function Util.PlayEffectFromPlayer(Player: Player, Effect: string, State: string)
     for I,V in next, Players:GetPlayers() do
         if V ~= Player then
-            Remote:FireClient(V, Effect, tostring(State):lower() == 'enabled' and 1 or 0, Player);
+            ClientCommunicator:FireClient(V, 'Effect', Effect, tostring(State):lower() == 'enabled' and 1 or 0, Player);
         end
     end
 end
 
 function Util.ApplyForce(Player: Player, Force: Vector3, Optional: Instance?)
-    ForceRemote:FireClient(Player, Force, Optional);
+    ClientCommunicator:FireClient(Player, 'Force', Force, Optional);
 end
 
 function Util.FireRay(Origin: Vector3, Direction: Vector3, List: table|Instance, Type: number)

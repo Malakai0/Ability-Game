@@ -2,12 +2,12 @@ local Effects = {Functions = {}}
 
 local Player = game:GetService('Players').LocalPlayer;
 
-local Common = game:GetService("ReplicatedStorage"):WaitForChild("Common");
+local Modules = game:GetService("ReplicatedStorage"):WaitForChild("Modules");
 
-local CameraShaker = require(Common.Modules:WaitForChild('CameraShaker'))
-local SharedMoves = require(Common.Modules:WaitForChild('SharedMoves'));
+local CameraShaker = require(Modules:WaitForChild('CameraShaker'))
+local SharedMoves = require(Modules:WaitForChild('SharedMoves'));
 
-local LightningBoltModule = Common.Modules:WaitForChild("LightningBolt")
+local LightningBoltModule = Modules:WaitForChild("LightningBolt")
 local LightningBolt = require(LightningBoltModule)
 local LightningExplosion = require(LightningBoltModule:WaitForChild('LightningExplosion'));
 
@@ -45,7 +45,7 @@ local function CreateFX(Name, Enabled, Disabled)
     Effects.Functions[Name] = {Enabled = Enabled or EMPTY_FUNCTION; Disabled = Disabled or EMPTY_FUNCTION}
 end
 
-CreateFX('InstantaneousLightningBolt', function(TargetPlayer)
+CreateFX('LightningStrike', function(TargetPlayer)
     local Color = Color3.new(1,1,1);
 
     local Character = TargetPlayer.Character;
@@ -73,7 +73,7 @@ CreateFX('InstantaneousLightningBolt', function(TargetPlayer)
     A0.WorldPosition, A1.WorldPosition = P0, P1;
     A0.WorldAxis, A1.WorldAxis = A0Look, -A0Look;
 
-    local TIME_TO_HIT_GROUND = SharedMoves.InstantaneousLightningBolt.Environment.TIME_FOR_BOLT;
+    local TIME_TO_HIT_GROUND = SharedMoves.LightningStrike.Environment.TIME_FOR_BOLT;
 
     RepeatFunction(3, function()
         local Bolt = LightningBolt.new(A0, A1, 30)
