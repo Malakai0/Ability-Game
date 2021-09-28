@@ -12,7 +12,7 @@
     "ServerScriptService": {
       "$ignoreUnknownInstances": true,
       "$className": "ServerScriptService",
-      "$path": "src/Replicated"
+      "$path": "src/Server"
     },
 
     "StarterPlayer": {
