@@ -4,22 +4,24 @@ local Player = game:GetService('Players').LocalPlayer;
 
 local Common = game:GetService("ReplicatedStorage"):WaitForChild("Common");
 
-local CameraShaker = require(Common:WaitForChild('CameraShaker'))
-local SharedMoves = require(Common:WaitForChild('SharedMoves'));
+local CameraShaker = require(Common.Modules:WaitForChild('CameraShaker'))
+local SharedMoves = require(Common.Modules:WaitForChild('SharedMoves'));
 
-local LightningBoltModule = Common:WaitForChild("LightningBolt")
+local LightningBoltModule = Common.Modules:WaitForChild("LightningBolt")
 local LightningBolt = require(LightningBoltModule)
 local LightningExplosion = require(LightningBoltModule:WaitForChild('LightningExplosion'));
 
 local ShakerInstance = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCFrame)
     workspace.CurrentCamera.CFrame *= shakeCFrame
-end);ShakerInstance:Start()
+end);
+
+ShakerInstance:Start()
 
 local function Lerp(A, B, X)
     return (1 - X) * A + B * X;
 end
 
-local function FireRay(Origin, Direction, List, Type)
+local function FireRay(Origin: Vector3, Direction: Vector3, List: Array<Instance>|Instance, Type: number?)
     local Params = RaycastParams.new()
     Params.FilterType = Type == 0 and Enum.RaycastFilterType.Whitelist or Enum.RaycastFilterType.Blacklist
     Params.FilterDescendantsInstances = type(List) == 'table' and List or {List};
@@ -31,7 +33,7 @@ local function FireRay(Origin, Direction, List, Type)
     end
 end
 
-local function DoNTimes(N: number, Function)
+local function RepeatFunction(N: number, Function: () -> ())
     for _ = 1, N do
         task.spawn(Function);
     end
@@ -58,7 +60,7 @@ CreateFX('InstantaneousLightningBolt', function(TargetPlayer)
 
     if (not Position) then return end;
 
-    if ((Position - RayOrigin).Magnitude >= 10) then
+    if (math.abs((Position.Y - RayOrigin.Y)) >= 30) then
         Position = RayOrigin + Vector3.new(0, -3, 0);
     end
 
@@ -73,7 +75,7 @@ CreateFX('InstantaneousLightningBolt', function(TargetPlayer)
 
     local TIME_TO_HIT_GROUND = SharedMoves.InstantaneousLightningBolt.Environment.TIME_FOR_BOLT;
 
-    DoNTimes(3, function()
+    RepeatFunction(3, function()
         local Bolt = LightningBolt.new(A0, A1, 30)
 
         Bolt.Color = Color;

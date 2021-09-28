@@ -5,7 +5,7 @@ local ForceRemote = game:GetService'ReplicatedStorage':WaitForChild'Force';
 
 local Common = ReplicatedStorage:WaitForChild('Common');
 
-local Effects = require(Common:WaitForChild('Effects'));
+local Effects = require(Common.Modules:WaitForChild('Effects'));
 
 Remote.OnClientEvent:Connect(function(EffectName, State, Caller)
     local Effect = Effects.Functions[EffectName]

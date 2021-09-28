@@ -6,8 +6,8 @@ local CurrentlyHandling = setmetatable({}, {__mode = "v"});
 
 local Common = game:GetService("ReplicatedStorage").Common;
 
-local Promise = require(Common.Promise);
-local SharedMoves = require(Common.SharedMoves);
+local Promise = require(Common.Modules.Promise);
+local SharedMoves = require(Common.Modules.SharedMoves);
 
 local MoveList = script.Moves:GetChildren()
 local Moves = {}

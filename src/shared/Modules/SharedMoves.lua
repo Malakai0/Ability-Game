@@ -1,7 +1,7 @@
 return {
-    InstantaneousLightningBolt = {
+    LightningStrike = {
         Keybind = Enum.KeyCode.E;
-        Name = 'InstantaneousLightningBolt';
+        Name = 'LightningStrike';
 
         Cooldown = 3;
         MoveLength = .4;
