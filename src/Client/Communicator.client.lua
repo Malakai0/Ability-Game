@@ -3,7 +3,7 @@ local Remotes = ReplicatedStorage:WaitForChild'Remotes';
 
 local Communicator = Remotes:WaitForChild('ClientCommunication');
 
-local Modules = ReplicatedStorage:WaitForChild'Modules';
+local Modules = ReplicatedStorage:WaitForChild'Modules':WaitForChild('LogicModules');
 
 local ClientFunctions = require(Modules:WaitForChild'ClientFunctions');
 

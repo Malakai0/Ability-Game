@@ -45,7 +45,7 @@ function Util.AOEAttack(Player: Player, Origin: CFrame, Radius: number, Whitelis
 
     local AffectedModels: table = setmetatable({}, {__mode = 'k'});
 
-    local AffectMaxCount = Settings.MaxHits or 1;
+    local AffectMaxCount: number = Settings.MaxHits or 1;
 
     for _, Part: BasePart in next, Parts do
         local Model = Part:FindFirstAncestorOfClass('Model')

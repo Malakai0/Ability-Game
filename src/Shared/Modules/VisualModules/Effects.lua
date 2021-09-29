@@ -4,10 +4,10 @@ local Player = game:GetService('Players').LocalPlayer;
 
 local Modules = game:GetService("ReplicatedStorage"):WaitForChild("Modules");
 
-local CameraShaker = require(Modules:WaitForChild('CameraShaker'))
+local CameraShaker = require(Modules:WaitForChild('VisualModules'):WaitForChild('CameraShaker'))
 local SharedMoves = require(Modules:WaitForChild('SharedMoves'));
 
-local LightningBoltModule = Modules:WaitForChild("LightningBolt")
+local LightningBoltModule = Modules:WaitForChild('VisualModules'):WaitForChild("LightningBolt")
 local LightningBolt = require(LightningBoltModule)
 local LightningExplosion = require(LightningBoltModule:WaitForChild('LightningExplosion'));
 
@@ -85,11 +85,12 @@ CreateFX('LightningStrike', function(TargetPlayer)
 
         Bolt.Enabled = true;
 
-        task.delay(.3, function()
+        task.delay(TIME_TO_HIT_GROUND + .1, function()
             Bolt:DestroyDissipate(.1, .1)
-            task.wait(.15)
-            Bolt = nil;
 
+            task.wait(.15)
+
+            Bolt = nil;
             A0, A1 = nil, nil;
         end)
     end)

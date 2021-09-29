@@ -4,7 +4,7 @@ local ReplicatedStorage = game:GetService'ReplicatedStorage'
 local Modules = ReplicatedStorage:WaitForChild'Modules';
 local GUIHandler = ReplicatedStorage:WaitForChild('GUIHandler')
 
-local Effects = require(Modules:WaitForChild('Effects'));
+local Effects = require(Modules:WaitForChild('VisualModules'):WaitForChild('Effects'));
 local GUIModule = require(GUIHandler:WaitForChild('GUI'));
 
 function ClientFunctions.GUI(...)

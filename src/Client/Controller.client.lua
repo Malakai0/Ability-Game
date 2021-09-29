@@ -3,7 +3,7 @@ local Player = game:GetService('Players').LocalPlayer;
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Modules = ReplicatedStorage:WaitForChild('Modules');
 
-local Effects = require(Modules:WaitForChild('Effects'));
+local Effects = require(Modules:WaitForChild('VisualModules'):WaitForChild('Effects'));
 local SharedMoves = require(Modules:WaitForChild('SharedMoves'));
 
 local Handler = ReplicatedStorage:WaitForChild('Remotes'):WaitForChild('RemoteEvent');
