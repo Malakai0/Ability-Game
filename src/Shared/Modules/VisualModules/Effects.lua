@@ -5,7 +5,7 @@ local Player = game:GetService('Players').LocalPlayer;
 local Modules = game:GetService("ReplicatedStorage"):WaitForChild("Modules");
 
 local CameraShaker = require(Modules:WaitForChild('VisualModules'):WaitForChild('CameraShaker'))
-local SharedMoves = require(Modules:WaitForChild('SharedMoves'));
+local SharedMoves = require(Modules:WaitForChild('DataModules'):WaitForChild('SharedMoves'));
 
 local LightningBoltModule = Modules:WaitForChild('VisualModules'):WaitForChild("LightningBolt")
 local LightningBolt = require(LightningBoltModule)

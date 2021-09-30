@@ -1,19 +1,19 @@
 local Server = {};
 
-for I,V in next, script.Systems:GetChildren() do
-    if (not V:IsA('ModuleScript')) then continue end;
+for _, Component in next, script.Systems:GetChildren() do
+    if (not Component:IsA('ModuleScript')) then continue end;
 
-    local Value = require(V);
+    local Value = require(Component);
 
     if (type(Value) == 'table' and rawget(Value, 'Init')) then
-        Value.Init();
+        Value.Init(Server);
     end
 
-    Server[V.Name] = Value;
+    Server[Component.Name] = Value;
 end
 
-for I,V in next, Server do
-    if (type(V) == 'table' and rawget(V, 'Start')) then
-        V.Start();
+for _, Component in next, Server do
+    if (type(Component) == 'table' and rawget(Component, 'Start')) then
+        Component.Start(Server);
     end
 end

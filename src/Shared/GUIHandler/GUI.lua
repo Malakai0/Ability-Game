@@ -5,7 +5,6 @@ local ComponentFolder: Folder = script.Parent.GUIComponents;
 
 for _,V in next, ComponentFolder:GetChildren() do
     if (not V:IsA('ModuleScript')) then
-        warn('Invalid GUI component "' .. V.Name .. '".')
         continue
     end
 

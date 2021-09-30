@@ -2,12 +2,18 @@ local Util = {}
 
 local ClientCommunicator: RemoteEvent = game:GetService'ReplicatedStorage'.Remotes.ClientCommunication;
 
-local Players = game:GetService('Players');
+local Players: Players = game:GetService('Players');
 
+--- Applies a GUI to the client, da fuq did you expect?
+---@param Player Player
 function Util.ApplyGui(Player: Player, ...)
     ClientCommunicator:FireClient(Player, 'GUI', ...);
 end
 
+--- Makes an effect (`Effect`) go wooosh to every player, other than the caller; `Player`.
+---@param Player Player
+---@param Effect string
+---@param State string
 function Util.PlayEffectFromPlayer(Player: Player, Effect: string, State: string)
     for I,V in next, Players:GetPlayers() do
         if V ~= Player then
@@ -16,10 +22,19 @@ function Util.PlayEffectFromPlayer(Player: Player, Effect: string, State: string
     end
 end
 
+--- Applies a force from `Player`'s client, given Force `Force`. `Optional` is the instance you want to force to be applied to.
+---@param Player Player
+---@param Force Vector3
+---@param Optional Instance?|nil
 function Util.ApplyForce(Player: Player, Force: Vector3, Optional: Instance?)
     ClientCommunicator:FireClient(Player, 'Force', Force, Optional);
 end
 
+--- Fires a ray from `Origin`, towards `Direction`, `List` given as a white/blacklist (depending on `Type`).
+---@param Origin Vector3
+---@param Direction Vector3
+---@param List table|Instance
+---@param Type number
 function Util.FireRay(Origin: Vector3, Direction: Vector3, List: table|Instance, Type: number)
     local Params = RaycastParams.new()
     Params.FilterType = Type == 0 and Enum.RaycastFilterType.Whitelist or Enum.RaycastFilterType.Blacklist

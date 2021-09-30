@@ -4,16 +4,31 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Modules = ReplicatedStorage:WaitForChild('Modules');
 
 local Effects = require(Modules:WaitForChild('VisualModules'):WaitForChild('Effects'));
-local SharedMoves = require(Modules:WaitForChild('SharedMoves'));
+local SharedMoves = require(Modules:WaitForChild('DataModules'):WaitForChild('SharedMoves'));
 
 local Handler = ReplicatedStorage:WaitForChild('Remotes'):WaitForChild('RemoteEvent');
 
 local Cooldown = {}; --// For FX.
 
-local Moves = {}
+--// For different abilties.
+local function SanityCheck(Move: table)
+    return true;
+end
 
-for _, Move in next, SharedMoves do
-    Moves[Move.Keybind.Value] = Move;
+local function ContainsKeybind(Keybinds: table, Keybind: number)
+    for _, TargetKeybind in next, Keybinds do
+        if (TargetKeybind.Value == Keybind) then
+            return true;
+        end
+    end
+end
+
+local function GetMoveFromKeybind(Keybind: number)
+    for _, V in next, SharedMoves do
+        if (ContainsKeybind(V.Keybinds, Keybind) and SanityCheck(V)) then
+            return V;
+        end
+    end
 end
 
 local function GenerateCooldownKeyForID(Id, Move)
@@ -29,7 +44,7 @@ local function CallMove(Value, State)
 
     Handler:FireServer(Value, State)
 
-    local Shared = Moves[Value];
+    local Shared = GetMoveFromKeybind(Value);
     local Effect = Shared and Effects.Functions[Shared.Name]
     local Key = Shared and GenerateCooldownKeyForID(Id, Shared.Name .. State);
 

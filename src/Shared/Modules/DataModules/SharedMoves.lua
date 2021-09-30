@@ -1,7 +1,9 @@
 return {
     LightningStrike = {
-        Keybind = Enum.KeyCode.E;
+        Keybinds = {Enum.KeyCode.E};
+
         Name = 'LightningStrike';
+        DisplayName = 'Lightning Strike';
 
         Cooldown = 3;
         MoveLength = .4;

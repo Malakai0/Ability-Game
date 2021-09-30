@@ -8,7 +8,7 @@ local Effects = require(Modules:WaitForChild('VisualModules'):WaitForChild('Effe
 local GUIModule = require(GUIHandler:WaitForChild('GUI'));
 
 function ClientFunctions.GUI(...)
-    GUIModule.CreateGuiComponent(...);
+    return GUIModule.CreateGuiComponent(...);
 end
 
 function ClientFunctions.Effect(EffectName, State, Caller)

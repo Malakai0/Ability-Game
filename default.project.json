@@ -21,8 +21,14 @@
       "StarterPlayerScripts": {
         "$ignoreUnknownInstances": true,
         "$className": "StarterPlayerScripts",
-        "$path": "src/Client"
+        "$path": "src/Client/Scripts"
       }
+    },
+
+    "StarterPack": {
+      "$ignoreUnknownInstances": true,
+      "$className": "StarterPack",
+      "$path": "src/Client/Backpack"
     }
   }
 }
