@@ -19,13 +19,11 @@ for _, Move in next, MoveList do
     Moves[MoveInfo.Move] = MoveInfo;
 end
 
-local function GetEnumItemFromIndex(Index: number)
-    for _, Enums in next, Enum:GetEnums() do
-        for _, Item in next, Enums:GetEnumItems() do
-            if (Item.Value == Index) then
-                return Item;
-            end
-        end
+local EnumItems = {};
+
+for _, Enums in next, {Enum.KeyCode, Enum.UserInputType} do
+    for _, Item in next, Enums:GetEnumItems() do
+        EnumItems[Item.Value] = Item.Name;
     end
 end
 
@@ -56,7 +54,7 @@ end
 
 Remote.OnServerEvent:Connect(function(Player, Keybind, State)
 
-    if (not GetEnumItemFromIndex(Keybind)) then
+    if (not EnumItems[Keybind]) then
         return;
     end
 
@@ -136,7 +134,7 @@ Remote.OnServerEvent:Connect(function(Player, Keybind, State)
 
             if (ApplyCooldown) then
                 local Length = SharedMoves[MoveKey].Cooldown
-                Util.ApplyGui(Player, 'Cooldown', SharedMoves[MoveKey].DisplayName, GetEnumItemFromIndex(Keybind).Name, Length)
+                Util.ApplyGui(Player, 'Cooldown', SharedMoves[MoveKey].DisplayName, EnumItems[Keybind], Length)
 
                 task.delay(SharedMoves[MoveKey].Cooldown or 0, function()
                     table.remove(Cooldowns, table.find(Cooldowns, GenerateCooldownKeyForID(Id, MoveKey)))

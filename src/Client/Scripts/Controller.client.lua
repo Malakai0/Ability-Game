@@ -9,23 +9,16 @@ local SharedMoves = require(Modules:WaitForChild('DataModules'):WaitForChild('Sh
 local Handler = ReplicatedStorage:WaitForChild('Remotes'):WaitForChild('RemoteEvent');
 
 local Cooldown = {}; --// For FX.
+local EnumItems = {};
 
 --// For different abilties.
 local function SanityCheck(Move: table)
     return true;
 end
 
-local function ContainsKeybind(Keybinds: table, Keybind: number)
-    for _, TargetKeybind in next, Keybinds do
-        if (TargetKeybind.Value == Keybind) then
-            return true;
-        end
-    end
-end
-
-local function GetMoveFromKeybind(Keybind: number)
+local function GetMoveFromKeybind(Keybind: EnumItem)
     for _, V in next, SharedMoves do
-        if (ContainsKeybind(V.Keybinds, Keybind) and SanityCheck(V)) then
+        if (table.find(V.Keybinds, Keybind) and SanityCheck(V)) then
             return V;
         end
     end
@@ -35,16 +28,16 @@ local function GenerateCooldownKeyForID(Id, Move)
     return Id .. ':' .. Move;
 end
 
-local function CallMove(Value, State)
+local function CallMove(Keybind, State)
     if (not Player.Character) then
         return
     end
 
     local Id = Player.Character:GetAttribute('UID')
 
-    Handler:FireServer(Value, State)
+    Handler:FireServer(Keybind.Value, State)
 
-    local Shared = GetMoveFromKeybind(Value);
+    local Shared = GetMoveFromKeybind(Keybind);
     local Effect = Shared and Effects.Functions[Shared.Name]
     local Key = Shared and GenerateCooldownKeyForID(Id, Shared.Name .. State);
 
@@ -64,9 +57,9 @@ local function HandleConnection(Connection, CorrespondingState)
         if (Typing) then return end;
     
         if Key.UserInputType == Enum.UserInputType.Keyboard then
-            CallMove(Key.KeyCode.Value, CorrespondingState);
+            CallMove(Key.KeyCode, CorrespondingState);
         else
-            CallMove(Key.UserInputType.Value, CorrespondingState);
+            CallMove(Key.UserInputType, CorrespondingState);
         end
     end)
 end
