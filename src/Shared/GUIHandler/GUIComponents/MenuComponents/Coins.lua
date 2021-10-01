@@ -4,7 +4,7 @@ Coins.__index = Coins;
 
 function Coins.new(Label: TextLabel)
     local self = {
-        Label = Label;
+        GUIObject = Label;
     }
 
     setmetatable(self, Coins)
@@ -12,8 +12,8 @@ function Coins.new(Label: TextLabel)
     return self;
 end
 
-function Coins:Update(Data: table)
-    self.Label.Text = string.format('Coins: %s', Data.Stats.Coins)
+function Coins:Update(Data: table, Elements: table)
+    self.GUIObject.Text = string.format('Coins: %s', Data.Stats.Coins)
 end
 
 return Coins

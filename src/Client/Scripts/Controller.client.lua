@@ -5,15 +5,18 @@ local Modules = ReplicatedStorage:WaitForChild('Modules');
 
 local Effects = require(Modules:WaitForChild('VisualModules'):WaitForChild('Effects'));
 local SharedMoves = require(Modules:WaitForChild('DataModules'):WaitForChild('SharedMoves'));
+local CharacterMoves = require(Modules:WaitForChild('DataModules'):WaitForChild('CharacterMoves'));
 
 local Handler = ReplicatedStorage:WaitForChild('Remotes'):WaitForChild('RemoteEvent');
 
-local Cooldown = {}; --// For FX.
-local EnumItems = {};
+shared.LocalCooldown = {}; --// For FX.
 
 --// For different abilties.
 local function SanityCheck(Move: table)
-    return true;
+    local ActiveCharacter = Player.Character:GetAttribute('Character')
+    if (not ActiveCharacter) then return false end;
+
+    return table.find(CharacterMoves[ActiveCharacter], Move.Name)
 end
 
 local function GetMoveFromKeybind(Keybind: EnumItem)
@@ -41,13 +44,13 @@ local function CallMove(Keybind, State)
     local Effect = Shared and Effects.Functions[Shared.Name]
     local Key = Shared and GenerateCooldownKeyForID(Id, Shared.Name .. State);
 
-    if (Effect and (not table.find(Cooldown, Key))) then
-        table.insert(Cooldown, Key)
+    if (Effect and (not table.find(shared.LocalCooldown, Key))) then
+        table.insert(shared.LocalCooldown, Key)
         
         Effect[State == 1 and 'Enabled' or 'Disabled'](Player)
 
         task.delay((Shared.Cooldown or 0) + (Shared.MoveLength or 0), function()
-            table.remove(Cooldown, table.find(Cooldown, Key));
+            table.remove(shared.LocalCooldown, table.find(shared.LocalCooldown, Key));
         end)
     end
 end

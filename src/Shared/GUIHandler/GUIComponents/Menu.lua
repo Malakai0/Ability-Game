@@ -24,7 +24,7 @@ function Menu.Create(MenuScreen: ScreenGui)
 
             for Name, Component in next, Elements do
                 local Success, Error = pcall(function()
-                    Component:Update(Data)
+                    Component:Update(Data, Elements)
                 end)
 
                 if (not Success) then

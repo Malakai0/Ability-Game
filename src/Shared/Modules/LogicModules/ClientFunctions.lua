@@ -7,6 +7,19 @@ local GUIHandler = ReplicatedStorage:WaitForChild('GUIHandler')
 local Effects = require(Modules:WaitForChild('VisualModules'):WaitForChild('Effects'));
 local GUIModule = require(GUIHandler:WaitForChild('GUI'));
 
+local function ApplyLocalCooldown(CooldownKey, Length)
+    table.insert(shared.LocalCooldown, CooldownKey)
+
+    task.delay(Length, function()
+        table.remove(shared.LocalCooldown, table.find(shared.LocalCooldown, CooldownKey));
+    end)
+end
+
+function ClientFunctions.ApplyLocalCooldown(CooldownKey, Length)
+    task.spawn(ApplyLocalCooldown, CooldownKey .. '1', Length)
+    task.spawn(ApplyLocalCooldown, CooldownKey .. '0', Length)
+end
+
 function ClientFunctions.GUI(...)
     return GUIModule.CreateGuiComponent(...);
 end

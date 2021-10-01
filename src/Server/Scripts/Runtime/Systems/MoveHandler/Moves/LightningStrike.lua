@@ -1,4 +1,4 @@
-local Util = require(script.Parent.Parent.Util);
+local Util = require(game:GetService('ServerStorage').ServerModules.Util);
 
 local function Lerp(A: number, B: number, X: number): number
     return (1 - X) * A + B * X;

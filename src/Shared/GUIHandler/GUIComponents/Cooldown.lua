@@ -11,7 +11,7 @@ function Cooldown.Create(Move: string, Key: string, Length: number?)
     local CooldownGui = Prefab:Clone();
     CooldownGui.Name = Move;
     CooldownGui.MoveName.Text = Move;
-    CooldownGui.Key.Text = Key;
+    CooldownGui.Key.Text = tostring(Key);
 
     CooldownGui.Parent = CooldownScreen.List;
 

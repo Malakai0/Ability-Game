@@ -1,14 +1,41 @@
 local Players = game:GetService'Players';
 
-local DataHandler = require(game:GetService('ReplicatedStorage').Modules.DataModules.DataHandler);
+local Modules = game:GetService('ReplicatedStorage').Modules;
+
+local DataHandler = require(Modules.DataModules.DataHandler);
+local CharacterMoves = require(Modules.DataModules.CharacterMoves);
+local SharedMoves = require(Modules.DataModules.SharedMoves);
+
+local Util = require(game:GetService('ServerStorage').ServerModules.Util)
 
 local System = {Data = setmetatable({}, {__mode = "v"})};
+local Server;
+
+function System.Start(_Server)
+    Server = _Server;
+end
 
 local function CharacterAdded(Character: Model)
     repeat task.wait() until Character.Parent == workspace
 
+    local Player = game:GetService('Players'):GetPlayerFromCharacter(Character);
+
     Character:SetAttribute('UID', game:GetService'HttpService':GenerateGUID())
+    Character:SetAttribute('Character', 'Zeus')
     Character.Parent = workspace.Entities
+
+    local Moves = CharacterMoves[Character:GetAttribute('Character')]
+    for _, MoveName in next, Moves do
+        local MoveData = SharedMoves[MoveName]
+        if (MoveData.CooldownOffSpawn) then
+            local DefaultKeybind = MoveData.Keybinds[1];
+            
+            Server.MoveHandler.AddCooldown(Player, MoveData.Name, (DefaultKeybind and DefaultKeybind.Value) or "", true);
+
+            local Id = Character:GetAttribute('UID')
+            Util.FireClient(Player, 'ApplyLocalCooldown', Id .. ':' .. MoveData.Name, MoveData.Cooldown)
+        end
+    end
 end
 
 local function PlayerAdded(Player: Player)

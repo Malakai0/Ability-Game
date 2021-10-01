@@ -47,14 +47,19 @@ function Util.FireRay(Origin: Vector3, Direction: Vector3, List: table|Instance,
     end
 end
 
+--- Creates an AOE attack at CFrame `Origin`, with a radius of `Radius` (cube-hitbox).
+---@param Player Player
+---@param Origin CFrame
+---@param Radius number
+---@param Whitelist table|nil
+---@param Settings table
+---@param Callback function
 function Util.AOEAttack(Player: Player, Origin: CFrame, Radius: number, Whitelist: table?, Settings: table, Callback: (BasePart) -> ())
     local Params = OverlapParams.new()
-    Params.FilterDescendantsInstances = {workspace.Entities}
+    Params.FilterDescendantsInstances = Whitelist or {};
     Params.FilterType = Enum.RaycastFilterType.Whitelist;
 
-    table.foreach(Whitelist or {}, function(_, value)
-        table.insert(Params.FilterDescendantsInstances, value)
-    end);
+    table.insert(Params.FilterDescendantsInstances, workspace.Entities)
 
     local Parts: Array<BasePart> = workspace:GetPartBoundsInBox(Origin, Vector3.new(Radius, Radius, Radius), Params);
 
@@ -83,6 +88,12 @@ function Util.AOEAttack(Player: Player, Origin: CFrame, Radius: number, Whitelis
     end
 
     AffectedModels = nil;
+end
+
+--- Fires the communicator event with custom arguments.
+---@param Player Player
+function Util.FireClient(Player: Player, ...)
+    ClientCommunicator:FireClient(Player, ...);
 end
 
 return Util;
