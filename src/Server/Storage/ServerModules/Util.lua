@@ -53,8 +53,7 @@ end
 ---@param Radius number
 ---@param Whitelist table|nil
 ---@param Settings table
----@param Callback function
-function Util.AOEAttack(Player: Player, Origin: CFrame, Radius: number, Whitelist: table?, Settings: table, Callback: (BasePart) -> ())
+function Util.AOEAttack(Player: Player, Origin: CFrame, Radius: number, Whitelist: table?, Settings: table, Callback: (Humanoid, Model, Player?) -> ())
     local Params = OverlapParams.new()
     Params.FilterDescendantsInstances = Whitelist or {};
     Params.FilterType = Enum.RaycastFilterType.Whitelist;

@@ -1,7 +1,8 @@
+local Players = game:GetService("Players")
 local DataHandler = {Server = {}, Shared = {}}
 
 export type PlayerData = {
-    GamemodeData: {[string]: {}},
+    GamemodeData: {[string]: {[any]: any}},
     
     Stats: {
         Coins: number,
@@ -15,24 +16,26 @@ export type PlayerData = {
     }
 }
 
+local DefaultProfile: PlayerData = {
+    GamemodeData = {};
+
+    Stats = {
+        Coins = 0;
+
+        Kills = 0;
+        Deaths = 0;
+    };
+
+    Cosmetics = {
+        Skins = {};
+        EquippedSkins = {};
+    };
+}
+
 if (game:GetService('RunService'):IsServer()) then
     local ProfileService = require(script.Parent.ProfileService);
 
-    DataHandler.DataStructure = ProfileService.GetProfileStore("PlayerData", {
-        GamemodeData = {};
-
-        Stats = {
-            Coins = 0;
-
-            Kills = 0;
-            Deaths = 0;
-        };
-
-        Cosmetics = {
-            Skins = {};
-            EquippedSkins = {};
-        };
-    });
+    DataHandler.DataStructure = ProfileService.GetProfileStore("PlayerData", DefaultProfile);
 end
 
 --- Loads and reutrns a profile given `Player`.
@@ -46,6 +49,7 @@ function DataHandler.Server.LoadProfile(Player: Player)
 
         if (not Player:IsDescendantOf(game:GetService'Players')) then
             Profile:Release();
+            Player:Kick();
         end
 
         Player:SetAttribute('Data', game:GetService('HttpService'):JSONEncode(Profile.Data));
@@ -73,7 +77,7 @@ end
 ---@param Player Player
 function DataHandler.Shared.GetDataForPlayer(Player: Player): PlayerData
     if (not Player:GetAttribute('Data')) then
-        repeat task.wait(.05) until Player:GetAttribute('Data');
+        repeat Player.AttributeChanged:Wait() until Player:GetAttribute('Data');
     end
 
     return game:GetService('HttpService'):JSONDecode(Player:GetAttribute('Data'));

@@ -7,7 +7,7 @@ return {
 
         Cooldown = 3;
         MoveLength = .4;
-        CooldownOffSpawn = true;
+        CooldownOffSpawn = false;
 
         Environment = {
             TIME_FOR_BOLT = .2;

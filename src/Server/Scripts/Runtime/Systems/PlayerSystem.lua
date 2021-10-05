@@ -70,8 +70,6 @@ local function PlayerRemoving(Player: Player)
 
     if (Data) then
         Data:Release()
-
-        System.Data[Id] = nil;
     end
 end
 

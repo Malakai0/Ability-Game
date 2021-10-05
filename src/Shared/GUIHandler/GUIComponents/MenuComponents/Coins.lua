@@ -1,4 +1,5 @@
-local CollectionService = game:GetService("CollectionService")
+local DataHandler = require(game:GetService('ReplicatedStorage'):WaitForChild('Modules'):WaitForChild('DataModules'):WaitForChild('DataHandler'));
+
 local Coins = {}
 Coins.__index = Coins;
 
@@ -12,7 +13,7 @@ function Coins.new(Label: TextLabel)
     return self;
 end
 
-function Coins:Update(Data: table, Elements: table)
+function Coins:Update(Data: DataHandler.PlayerData, Elements: table)
     self.GUIObject.Text = string.format('Coins: %s', Data.Stats.Coins)
 end
 

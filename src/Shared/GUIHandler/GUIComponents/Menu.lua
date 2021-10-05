@@ -11,16 +11,16 @@ function Menu.Create(MenuScreen: ScreenGui)
     local Elements = {
         Coins = require(MenuComponents.Coins).new(MenuScreen.Coins);
     }
-    
+
     local Updater; do
         local LastUpdated = 0;
         Updater = game:GetService('RunService').Heartbeat:Connect(function()
-            if (tick() - LastUpdated <= 0.5) then
+            if (tick() - LastUpdated <= 0.2) then
                 return;
             end
             LastUpdated = tick();
 
-            local Data = DataHandler.Shared.GetDataForPlayer(Player);
+            local Data: DataHandler.PlayerData = DataHandler.Shared.GetDataForPlayer(Player);
 
             for Name, Component in next, Elements do
                 local Success, Error = pcall(function()
