@@ -22,18 +22,18 @@ local function Explode(Player: Player, Data: table): nil
         Position = RayOrigin.Position + Vector3.new(0, -3, 0);
     end
 
-    local P1 = CFrame.new(Position);
+    local HitCFrame = CFrame.new(Position);
     Position = nil;
 
     task.wait(Data.TIME_FOR_BOLT)
 
-    Util.AOEAttack(Player, P1, Size, {}, {MaxHits = 1}, function(Humanoid: Humanoid, Model: Model, TargetPlayer: Player?)
+    Util.AOEAttack(Player, HitCFrame, Size, {}, {MaxHits = 1}, function(Humanoid: Humanoid, Model: Model, TargetPlayer: Player?)
         Humanoid:TakeDamage(20)
 
-        local PrimaryPart: BasePart = Model.PrimaryPart;
-        if (PrimaryPart) then
+        local Recipient: BasePart = Model.PrimaryPart;
+        if (Recipient) then
             local ExtraForce: Vector3 = Vector3.new(25, 30, 25)
-            local Distance: Vector3 = (P1.Position - PrimaryPart.Position);
+            local Distance: Vector3 = (HitCFrame.Position - Recipient.Position);
 
             local InverseDistance: number = 1 - (Distance.Magnitude / (Size / 2));
             local AppliedForce: number = Lerp(ExtraForce * .8, ExtraForce, InverseDistance);
@@ -43,12 +43,12 @@ local function Explode(Player: Player, Data: table): nil
             if (TargetPlayer) then
                 Util.ApplyForce(TargetPlayer, -Direction)
             else --// NPC
-                PrimaryPart:SetNetworkOwner(Player)
+                Recipient:SetNetworkOwner(Player)
 
-                Util.ApplyForce(Player, -Direction, PrimaryPart) --// Player controls their physics.
+                Util.ApplyForce(Player, -Direction, Recipient) --// Player controls their physics.
 
                 task.delay(4, function()
-                    PrimaryPart:SetNetworkOwnershipAuto();
+                    Recipient:SetNetworkOwnershipAuto();
                 end)
             end
         end
