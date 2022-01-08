@@ -25,7 +25,7 @@ function ClientFunctions.Force(Force, Target)
 
     if (not Part) then return end;
 
-    Part:ApplyImpulse(Force * (Target and 2 or 1));
+    Part:ApplyImpulse(Force * (Target and 2 or 1)); --// Apply big boy force.
 end
 
 return ClientFunctions
