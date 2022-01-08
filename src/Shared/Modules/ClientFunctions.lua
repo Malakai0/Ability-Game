@@ -23,7 +23,9 @@ function ClientFunctions.Force(Force, Target)
 
     local Part = Target or (Character and Character.PrimaryPart);
 
-    if (not Part) then return end;
+    if (not Part) then
+        return
+    end
 
     Part:ApplyImpulse(Force * (Target and 2 or 1)); --// Apply big boy force.
 end
