@@ -1,3 +1,3 @@
-# Ability Game
+# This is old garbage :3
 
-Some random Ability Game. Dunno, just messing around.
+Feel free to browse the code or whatever but it's really bad garbage from my **dark age**
